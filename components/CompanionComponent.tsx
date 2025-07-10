@@ -9,14 +9,13 @@ import soundwaves from '@/constants/soundwaves.json'
 import {addToSessionHistory} from "@/lib/actions/companions.actions";
 
 enum CallStatus {
-  INACTIVE,
-  CONNECTING,
-  ACTIVE,
-  FINISHED
+    INACTIVE = 'INACTIVE',
+    CONNECTING = 'CONNECTING',
+    ACTIVE = 'ACTIVE',
+    FINISHED = 'FINISHED',
 }
 
-const CompanionComponent = ({companionId , subject, name, topic, userName,userImage,style, voice}:CompanionComponentProps) => {
-
+const CompanionComponent = ({ companionId, subject, topic, name, userName, userImage, style, voice }: CompanionComponentProps) => {
     const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
@@ -95,30 +94,33 @@ const CompanionComponent = ({companionId , subject, name, topic, userName,userIm
         vapi.stop()
     }
 
+    return (
+        <section className="flex flex-col h-[60vh]">
+            <section className="flex gap-8 max-sm:flex-col">
+                <div className="companion-section">
+                    <div className="companion-avatar" style={{ backgroundColor: getSubjectColor(subject)}}>
+                        <div
+                            className={
+                            cn(
+                                'absolute transition-opacity duration-1000', callStatus === CallStatus.FINISHED || callStatus === CallStatus.INACTIVE ? 'opacity-1001' : 'opacity-0', callStatus === CallStatus.CONNECTING && 'opacity-100 animate-pulse'
+                            )
+                        }>
+                            <Image src={`/icons/${subject}.svg`} alt={subject} width={150} height={150} className="max-sm:w-fit" />
+                        </div>
 
-  return (
-    
-    <section className='flex flex-col h-[70vh]'>
-        <section className='flex gap-8 max-sm:flex-col'>
-            <div className='companion-section'>
-                <div className='companion-avatar' style={{backgroundColor: getSubjectColor(subject)}}>
-                    <div className={cn('absolute transition-opacity duration-1000')}>
-                        <Image src={`/icons/${subject}.svg`} alt={subject} width={150} height={150}></Image>
-                    </div>
-
-                    <div className={cn('absolute transition-opacity duration-1000', callStatus === CallStatus.ACTIVE ? 'opacity-100': 'opacity-0')}>
+                        <div className={cn('absolute transition-opacity duration-1000', callStatus === CallStatus.ACTIVE ? 'opacity-100': 'opacity-0')}>
                             <Lottie
                                 lottieRef={lottieRef}
                                 animationData={soundwaves}
                                 autoplay={false}
                                 className="companion-lottie"
                             />
-                    </div>  
+                        </div>
+                    </div>
+                    <p className="font-bold text-2xl">{name}</p>
                 </div>
-                <p className="font-bold text-2xl">{name}</p>
-            </div>
 
-            <div className="user-section">
+                <div className="user-section">
                     <div className="user-avatar">
                         <Image src={userImage} alt={userName} width={130} height={130} className="rounded-lg" />
                         <p className="font-bold text-2xl">
@@ -139,11 +141,10 @@ const CompanionComponent = ({companionId , subject, name, topic, userName,userIm
                         : 'Start Session'
                         }
                     </button>
-            </div>
-        </section>
+                </div>
+            </section>
 
-
-        <section className="transcript">
+            <section className="transcript">
                 <div className="transcript-message no-scrollbar">
                     {messages.map((message, index) => {
                         if(message.role === 'assistant') {
@@ -165,9 +166,9 @@ const CompanionComponent = ({companionId , subject, name, topic, userName,userIm
                 </div>
 
                 <div className="transcript-fade" />
+            </section>
         </section>
-    </section>
-  )
+    )
 }
 
 export default CompanionComponent

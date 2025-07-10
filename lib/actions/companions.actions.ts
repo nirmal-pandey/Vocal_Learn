@@ -122,3 +122,31 @@ export const getUserCompanions = async (userId: string) => {
     return data;
 }
 
+export const newCompanionPermissions = async ()=>{
+
+    const {userId, has} = await auth();
+    if(!userId || !has) throw new Error('Unauthorized');
+    const supabase = createSupabaseClient();
+
+    let limit =0;
+
+    if(has({plan:'infinity_plan_learn_without_limits'})) {
+        return true;
+    }else if(has({feature:"4_active_companions"})) {
+        limit=4;
+    }
+    else if(has({feature:"11_active_companions"})) {
+        limit=11;
+    }
+
+    const { data, error } = await supabase
+        .from('Companions')
+        .select('id', { count: 'exact' })
+        .eq('author', userId);
+
+    if (error) {
+        throw new Error(error.message || 'Failed to check companion limit');
+    }
+
+    return data.length < limit;
+}

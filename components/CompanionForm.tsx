@@ -153,13 +153,13 @@ const CompanionForm = () => {
                         <SelectContent>
                             
                             <SelectItem 
-                                value="Male"
-                                className="capitalize"
+                                value="male"
+                                
                             >
                                 Male
                             </SelectItem>
                             <SelectItem 
-                                value="Female"
+                                value="female"
                             >
                                 Female
                             </SelectItem>
@@ -197,7 +197,6 @@ const CompanionForm = () => {
                             
                             <SelectItem 
                                 value="formal"
-                                className="capitalize"
                             >
                                 Formal
                             </SelectItem>
@@ -227,7 +226,7 @@ const CompanionForm = () => {
             <FormItem>
               <FormLabel>Estimated Session Duration</FormLabel>
               <FormControl>
-                <Input type="number" placeholder="Enter Duration" {...field} />
+                <Input type="number" placeholder="Enter Duration" {...field} className="input"/>
               </FormControl>
               <FormMessage />
             </FormItem>

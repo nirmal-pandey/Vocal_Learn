@@ -15,9 +15,9 @@ export const getSubjectColor = (subject: string) => {
  export const configureAssistant = (voice: string, style: string) => {
    const voiceObj = voices[voice as keyof typeof voices];
    const voiceId =
-  voiceObj && voiceObj[style as keyof typeof voiceObj]
-    ? voiceObj[style as keyof typeof voiceObj]
-    : "sarah";
+    voiceObj && voiceObj[style as keyof typeof voiceObj]
+      ? voiceObj[style as keyof typeof voiceObj]
+      : "sarah";
    const vapiAssistant: CreateAssistantDTO = {
      name: "Companion",
      firstMessage:
@@ -55,12 +55,10 @@ export const getSubjectColor = (subject: string) => {
          },
        ],
      },
-      // @ts-expect-error
+      
 
-     clientMessages: ["transcript"],
-             // @ts-expect-error
-
-     serverMessages: [],
+     clientMessages: [],
+     serverMessages: [] ,
    };
    return vapiAssistant;
  };
